@@ -1,17 +1,22 @@
 package com.vuongkma.motel.entities;
+import com.vuongkma.motel.helpers.enums.RoleUser;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.Id;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class User {
-    @jakarta.persistence.Id
+@Builder
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +31,10 @@ public class User {
     @Column(name = "phone")
     private String phoneNumber;
 
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private RoleUser role;
+
     @Column(name = "refresh_token", columnDefinition = "TEXT")
     private String refreshToken;
     private Date created_at;
@@ -34,4 +43,29 @@ public class User {
         created_at = new Date();
     }
     private Date update_at;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
 }

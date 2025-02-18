@@ -10,8 +10,9 @@ import com.vuongkma.motel.exceptions.AppException;
 import com.vuongkma.motel.exceptions.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import java.time.temporal.ChronoUnit;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -22,7 +23,6 @@ import java.util.StringJoiner;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j(topic = "JWT-SERVICE")
 public class JwtService {
     @Value("${jwt.secret-key}")
@@ -30,13 +30,13 @@ public class JwtService {
 
 
     public String generateAccessToken(User user) {
-        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+        JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
 
         JWTClaimsSet claimsSet =  new JWTClaimsSet.Builder()
                 .subject(user.getEmail())
                 .issuer("identity-service")
                 .issueTime(new Date())
-                .expirationTime(new Date(Instant.now().plus(60, ChronoUnit.MINUTES).toEpochMilli()))
+                .expirationTime(new Date(Instant.now().plus(43200, ChronoUnit.MINUTES).toEpochMilli()))
                 .jwtID(UUID.randomUUID().toString())
                 .claim("Authority", buildAuthority(user))
                 .claim("Permission", buildPermissions(user))
@@ -62,7 +62,7 @@ public class JwtService {
                 .subject(user.getEmail())
                 .issuer("identity-service")
                 .issueTime(new Date())
-                .expirationTime(new Date(Instant.now().plus(14, ChronoUnit.DAYS).toEpochMilli()))
+                .expirationTime(new Date(Instant.now().plus(60, ChronoUnit.DAYS).toEpochMilli()))
                 .jwtID(UUID.randomUUID().toString())
                 .build();
 

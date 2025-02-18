@@ -11,6 +11,7 @@ spring:
     hibernate:
       ddl-auto: update
     generate-ddl: true
+    show-sql: true
 
   kafka:
     bootstrap-servers: localhost:9094
@@ -32,5 +33,5 @@ cloudinary:
   api-secret: ${API-SECRET-KEY-CLOUDINARY}
 
 jwt:
-  secret-key: ${JWT-SECRET-KEY}
+  secret-key: e2fd201b2b295395cebbf5f54adae4a742b13175
 

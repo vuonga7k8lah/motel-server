@@ -1,11 +1,13 @@
 package com.vuongkma.motel.configuration;
 
 import com.vuongkma.motel.services.UserDetailServiceCustomizer;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -23,34 +25,28 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.List;
 
 @Configuration
-@RequiredArgsConstructor
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
     private static final String[] White_List = {
             "/api/v1/auth/**",
-            "/api/v1/users-creation",
-            "/api/v1/books",
-            "/api/v1/books-search-specification/**",
-            "/api/v1/books-search-criteria/**",
-            "/api/v1/books-search-keyword/**",
-            "/api/v1/books/{id}"
+            "/api/v1/users/creation",
     };
+    @Autowired
+    private UserDetailServiceCustomizer userDetailServiceCustomizer;
+    @Autowired
+    private JwtDecoderCustomizer jwtDecoder;
 
-    private final UserDetailServiceCustomizer userDetailServiceCustomizer;
-    private final JwtDecoderCustomizer jwtDecoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults());
-
         http.authorizeHttpRequests(request -> request
-                .requestMatchers(White_List).permitAll()
+                .requestMatchers(HttpMethod.GET, White_List).permitAll() // 🚀 Chỉ cho GET
+                .requestMatchers(HttpMethod.POST, White_List).permitAll() // 🚀 Chỉ cho POST
                 .anyRequest().authenticated());
         http.oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder))
@@ -63,15 +59,18 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(UserDetailServiceCustomizer userDetailServiceCustomizer, PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailServiceCustomizer);
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        return new ProviderManager(authenticationProvider);
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailServiceCustomizer);
-        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
 

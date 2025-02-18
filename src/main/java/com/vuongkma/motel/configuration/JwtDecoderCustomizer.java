@@ -10,6 +10,7 @@ import com.vuongkma.motel.services.JwtService;
 import com.vuongkma.motel.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -17,20 +18,22 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.text.ParseException;
 import java.util.Objects;
 @Component
-@RequiredArgsConstructor
+@Service
 @Slf4j(topic = "JWT-DECODER")
 public class JwtDecoderCustomizer implements JwtDecoder {
     @Value("${jwt.secret-key}")
     private String secretKey;
-
-    private final UserService userService;
-    private final JwtService jwtService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private  JwtService jwtService;
     private NimbusJwtDecoder nimbusJwtDecoder;
 
     @Override
@@ -50,7 +53,7 @@ public class JwtDecoderCustomizer implements JwtDecoder {
                 return nimbusJwtDecoder.decode(token);
             }
         } catch (ParseException | JOSEException e) {
-            log.error("Jwt decoder: Token invalid");
+//            log.error("Jwt decoder: Token invalid");
             throw new AppException(ErrorCode.TOKEN_INVALID);
         }
         throw new JwtException("Invalid token");
