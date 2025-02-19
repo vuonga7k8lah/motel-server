@@ -5,11 +5,8 @@ import com.vuongkma.motel.dto.response.UserCreateResponse;
 import com.vuongkma.motel.entities.User;
 import com.vuongkma.motel.helpers.enums.RoleUser;
 import com.vuongkma.motel.repositories.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

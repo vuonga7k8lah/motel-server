@@ -11,7 +11,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.Map;
 
 public class JwtAccessDined implements AccessDeniedHandler {
 
@@ -21,11 +21,13 @@ public class JwtAccessDined implements AccessDeniedHandler {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-
-
-
-        ResponseFormat.build(
+        // Tạo response JSON
+        Map<String, String> errorResponse = ResponseFormat.build(
                 ErrorCode.ACCESS_DINED.toString()
         );
+
+        // Ghi JSON vào response body
+        ObjectMapper objectMapper = new ObjectMapper();
+        response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
     }
 }

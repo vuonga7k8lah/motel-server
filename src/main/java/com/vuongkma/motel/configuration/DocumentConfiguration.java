@@ -1,4 +1,4 @@
-package com.vuongkma.blogs.configuration;
+package com.vuongkma.motel.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

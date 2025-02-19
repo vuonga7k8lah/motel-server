@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.time.Instant;
-import java.util.Date;
-import java.util.Objects;
-import java.util.StringJoiner;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j(topic = "JWT-SERVICE")
@@ -38,7 +35,7 @@ public class JwtService {
                 .issueTime(new Date())
                 .expirationTime(new Date(Instant.now().plus(43200, ChronoUnit.MINUTES).toEpochMilli()))
                 .jwtID(UUID.randomUUID().toString())
-                .claim("Authority", buildAuthority(user))
+                .claim("Authority", List.of(buildAuthority(user)))
                 .claim("Permission", buildPermissions(user))
                 .build();
 
@@ -110,9 +107,7 @@ public class JwtService {
 
 
     public String buildAuthority(User user) {
-        StringJoiner joiner = new StringJoiner(", ");
-
-        return null;
+        return "ROLE_" + user.getRole().name().toUpperCase();
     }
 
 

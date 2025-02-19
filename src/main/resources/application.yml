@@ -34,4 +34,7 @@ cloudinary:
 
 jwt:
   secret-key: e2fd201b2b295395cebbf5f54adae4a742b13175
+logging:
+  level:
+    org.springframework.security: DEBUG
 

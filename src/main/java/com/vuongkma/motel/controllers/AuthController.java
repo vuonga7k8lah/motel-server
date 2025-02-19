@@ -19,12 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j(topic = "Auth-Controller")
 public class AuthController {
     private final AuthService authenticationService;
-    @GetMapping()
-    private void hello(){
-        System.out.println("hello");
-    }
-
-
     @PostMapping("/sign-in")
     ResponseData<SignInResponse> signIn(@RequestBody @Valid SignInRequest request,
                                         HttpServletResponse response) {
