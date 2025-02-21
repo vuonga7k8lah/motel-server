@@ -10,7 +10,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    generate-ddl: true
+#    generate-ddl: true
     show-sql: true
 
   kafka:

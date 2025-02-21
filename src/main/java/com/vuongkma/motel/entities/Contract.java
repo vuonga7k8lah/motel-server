@@ -23,7 +23,7 @@ public class Contract {
     private Long room_id;
     private Date start_date;
     private Date end_date;
-    @Column(name = "images", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "deposit", nullable = false, columnDefinition = "TEXT")
     private String deposit;
 
     private String content;

@@ -60,7 +60,7 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(request -> request
                 .requestMatchers(HttpMethod.GET, White_List).permitAll()
                 .requestMatchers(HttpMethod.POST, White_List).permitAll()
-                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .requestMatchers("api/v1/admin/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers("/api/v1/owner/**").hasAuthority("ROLE_OWNER")
                 .anyRequest().authenticated());
         http.oauth2ResourceServer(oauth2 -> oauth2

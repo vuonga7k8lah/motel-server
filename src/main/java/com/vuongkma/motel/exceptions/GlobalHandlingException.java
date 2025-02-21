@@ -54,5 +54,15 @@ public class GlobalHandlingException {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ErrorResponse handleRuntimeException(RuntimeException exception, HttpServletRequest request) {
+        return ErrorResponse.builder()
+                .timestamp(new Date())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(exception.getMessage())
+                .path(request.getRequestURI())
+                .build();
+    }
 }
 

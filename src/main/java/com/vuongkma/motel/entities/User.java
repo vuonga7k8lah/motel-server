@@ -1,4 +1,5 @@
 package com.vuongkma.motel.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vuongkma.motel.helpers.enums.RoleUser;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,6 +37,10 @@ public class User implements UserDetails {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private RoleUser role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Services> services;
 
     @Column(name = "refresh_token", columnDefinition = "TEXT")
     private String refreshToken;

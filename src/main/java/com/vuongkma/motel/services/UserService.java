@@ -50,4 +50,8 @@ public class UserService {
         return UserCreateResponse.builder().build();
     }
 
+    public Optional<User> findById(Long id){
+        return userRepository.findById(id);
+    }
+
 }

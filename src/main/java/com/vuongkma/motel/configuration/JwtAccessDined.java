@@ -1,7 +1,6 @@
 package com.vuongkma.motel.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vuongkma.motel.dto.response.ErrorResponse;
 import com.vuongkma.motel.exceptions.ErrorCode;
 import com.vuongkma.motel.helpers.ResponseFormat;
 import jakarta.servlet.http.HttpServletRequest;

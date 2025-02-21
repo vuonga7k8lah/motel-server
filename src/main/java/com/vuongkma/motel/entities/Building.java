@@ -24,8 +24,11 @@ public class Building {
     @Column(name = "address", nullable = false, unique = true)
     private String address;
 
-    @Column(name = "images", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "images", nullable = false)
     private String images;
+
+    @Column(name = "desc", nullable = false,columnDefinition = "TEXT NOT NULL")
+    private String desc;
 
     private Date created_at;
     @PrePersist

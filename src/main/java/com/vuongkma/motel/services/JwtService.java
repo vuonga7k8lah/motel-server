@@ -36,6 +36,7 @@ public class JwtService {
                 .expirationTime(new Date(Instant.now().plus(43200, ChronoUnit.MINUTES).toEpochMilli()))
                 .jwtID(UUID.randomUUID().toString())
                 .claim("Authority", List.of(buildAuthority(user)))
+                .claim("user_id", user.getId())
                 .claim("Permission", buildPermissions(user))
                 .build();
 
